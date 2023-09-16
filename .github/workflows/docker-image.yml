@@ -1,6 +1,7 @@
 name: Alipan-Notify Builder
 
 on:
+  workflow_dispatch:
   push:
     branches: [ "master" ]
   pull_request:
