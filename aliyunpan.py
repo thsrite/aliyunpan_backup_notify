@@ -94,6 +94,9 @@ class AliyunPan:
                 self.__folder_files[file.name] = sub_files
 
     def sync_aliyunpan(self):
+        '''
+        同步阿里云文件
+        '''
         filepath = os.path.join("/mnt",
                                 'config.yaml')  # 文件路径,这里需要将a.yaml文件与本程序文件放在同级目录下
         with open(filepath, 'r') as f:  # 用with读取文件更好
@@ -102,7 +105,7 @@ class AliyunPan:
         refresh_token = str(configs["notify"]["refresh_token"]) or None
 
         # 第一次使用，会弹出二维码，供扫描登录
-        self._ali = Aligo(level=logging.INFO, refresh_token=refresh_token)
+        self._ali = Aligo(level=logging.ERROR, refresh_token=refresh_token)
         # 获取用户信息
         user = self._ali.get_user()
         logger.info(user)
