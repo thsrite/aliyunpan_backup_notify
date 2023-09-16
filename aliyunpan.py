@@ -17,6 +17,7 @@ KZT = logging.StreamHandler()
 KZT.setLevel(logging.DEBUG)
 logger.addHandler(KZT)
 
+
 class AliyunPan:
     # 本次文件存储路径
     __folder_json = '/mnt/floder_files.json'
@@ -28,7 +29,7 @@ class AliyunPan:
     # 定时器
     _scheduler = None
 
-    def __get_folder_files(self, parent, file, first_flag=False):
+    def __get_folder_files(self, parent, file, first_flag):
         '''
         获取文件夹下级文件存储
         :param parent:
@@ -67,7 +68,7 @@ class AliyunPan:
             sub_files = self.__folder_files.get(parent) or []
             for file2 in files:
                 if file2.type == 'folder':
-                    self.__get_folder_files(file2.name, file2)
+                    self.__get_folder_files(file2.name, file2, first_flag)
                 else:
                     # 判断是否新文件
                     new_flag = True
@@ -88,7 +89,7 @@ class AliyunPan:
                         sub_files.append(new_file)
                         new_file['parent'] = file.name
                         self.__new_files.append(new_file)
-                        logging.info(f"获取到新文件 {new_file}")
+                        logger.info(f"获取到新文件 {new_file}")
             if sub_files:
                 self.__folder_files[file.name] = sub_files
 
@@ -104,6 +105,7 @@ class AliyunPan:
         self._ali = Aligo(level=logging.INFO, refresh_token=refresh_token)
         # 获取用户信息
         user = self._ali.get_user()
+        logger.info(user)
 
         # 判断是否首次运行，首次运行不发通知
         first_flag = True
