@@ -57,9 +57,11 @@ class AliyunPan:
                 'time': time.strftime('%Y-%m-%d %H:%M:%S',
                                       time.strptime(file.updated_at, '%Y-%m-%dT%H:%M:%S.%fZ'))
             }
-            sub_files.append(new_file)
+            if first_flag:
+                sub_files.append(new_file)
 
             if new_flag and not first_flag:
+                sub_files.append(new_file)
                 new_file['parent'] = parent
                 self.__new_files.append(new_file)
             if sub_files:
@@ -87,9 +89,11 @@ class AliyunPan:
                         'time': time.strftime('%Y-%m-%d %H:%M:%S',
                                               time.strptime(file2.updated_at, '%Y-%m-%dT%H:%M:%S.%fZ'))
                     }
-                    sub_files.append(new_file)
+                    if first_flag:
+                        sub_files.append(new_file)
 
                     if new_flag and not first_flag:
+                        sub_files.append(new_file)
                         new_file['parent'] = file.name
                         self.__new_files.append(new_file)
                         logger.info(f"获取到新文件 {new_file}")
