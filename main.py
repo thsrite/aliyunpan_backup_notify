@@ -15,7 +15,7 @@ _scheduler = None
 
 if __name__ == '__main__':
     alipan = aliyunpan.AliyunPan()
-    filepath = os.path.join("/Users/jiangxd/PycharmProjects/alipan_notify/",
+    filepath = os.path.join("/mnt",
                             'config.yaml')  # 文件路径,这里需要将a.yaml文件与本程序文件放在同级目录下
     with open(filepath, 'r') as f:  # 用with读取文件更好
         configs = yaml.load(f, Loader=yaml.FullLoader)  # 按字典格式读取并返回

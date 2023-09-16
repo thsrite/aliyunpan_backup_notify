@@ -1,4 +1,3 @@
-import json
 import logging
 
 import requests
@@ -8,7 +7,7 @@ import os
 
 class WeChat():
     def __init__(self):
-        filepath = os.path.join("/Users/jiangxd/PycharmProjects/alipan_notify", 'config.yaml')
+        filepath = os.path.join("/mnt", 'config.yaml')
         with open(filepath, 'r') as f:  # 用with读取文件更好
             configs = yaml.load(f, Loader=yaml.FullLoader)  # 按字典格式读取并返回
 
