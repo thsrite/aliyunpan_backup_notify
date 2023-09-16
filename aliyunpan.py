@@ -102,9 +102,8 @@ class AliyunPan:
 
     def resync(self):
         # 本次文件存储路径
-        __folder_json = '/mnt/floder_files.json'
-        if Path(__folder_json).exists():
-            os.remove(__folder_json)
+        if Path(self.__folder_json).exists():
+            os.remove(self.__folder_json)
             logger.info(f"开始删除本地文件 {self.__folder_json}")
         self.sync_aliyunpan()
 
