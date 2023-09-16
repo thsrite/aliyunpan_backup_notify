@@ -42,6 +42,14 @@ class AliyunPan:
         if file and file.type == 'file':
             sub_files = self.__folder_files.get(parent) or []
 
+            new_file = {
+                'name': file.name,
+                'size': file.size,
+                'time': time.strftime('%Y-%m-%d %H:%M:%S',
+                                      time.strptime(file.updated_at, '%Y-%m-%dT%H:%M:%S.%fZ'))
+            }
+            sub_files.append(new_file)
+
             # 判断是否新文件
             new_flag = True
 
@@ -52,17 +60,11 @@ class AliyunPan:
                         break
 
             if new_flag and not first_flag:
-                new_file = {
-                    'name': file.name,
-                    'size': file.size,
-                    'time': time.strftime('%Y-%m-%d %H:%M:%S',
-                                          time.strptime(file.updated_at, '%Y-%m-%dT%H:%M:%S.%fZ'))
-                }
-                sub_files.append(new_file)
                 new_file['parent'] = parent
                 self.__new_files.append(new_file)
             if sub_files:
                 self.__folder_files[file.name] = sub_files
+
         files = self._ali.get_file_list(parent_file_id=parent_file_id)
         if files:
             sub_files = self.__folder_files.get(parent) or []
@@ -70,6 +72,14 @@ class AliyunPan:
                 if file2.type == 'folder':
                     self.__get_folder_files(file2.name, file2, first_flag)
                 else:
+                    new_file = {
+                        'name': file2.name,
+                        'size': file2.size,
+                        'time': time.strftime('%Y-%m-%d %H:%M:%S',
+                                              time.strptime(file2.updated_at, '%Y-%m-%dT%H:%M:%S.%fZ'))
+                    }
+                    sub_files.append(new_file)
+
                     # 判断是否新文件
                     new_flag = True
 
@@ -80,13 +90,6 @@ class AliyunPan:
                                 break
 
                     if new_flag and not first_flag:
-                        new_file = {
-                            'name': file2.name,
-                            'size': file2.size,
-                            'time': time.strftime('%Y-%m-%d %H:%M:%S',
-                                                  time.strptime(file2.updated_at, '%Y-%m-%dT%H:%M:%S.%fZ'))
-                        }
-                        sub_files.append(new_file)
                         new_file['parent'] = file.name
                         self.__new_files.append(new_file)
                         logger.info(f"获取到新文件 {new_file}")
@@ -98,12 +101,14 @@ class AliyunPan:
         __folder_json = '/mnt/floder_files.json'
         if Path(__folder_json).exists():
             os.remove(__folder_json)
+            logger.info(f"开始删除本地文件 {self.__folder_json}")
         self.sync_aliyunpan()
 
     def sync_aliyunpan(self):
         '''
         同步阿里云文件
         '''
+        logger.info("同步阿里云文件")
         filepath = os.path.join("/mnt",
                                 'config.yaml')  # 文件路径,这里需要将a.yaml文件与本程序文件放在同级目录下
         with open(filepath, 'r') as f:  # 用with读取文件更好
@@ -153,6 +158,9 @@ class AliyunPan:
 
         # 最终写入文件
         if self.__folder_files:
+            logger.info(f"开始写入本地文件 {self.__folder_json}")
             file = open(self.__folder_json, 'w')
             file.write(json.dumps(self.__folder_files))
             file.close()
+        else:
+            logger.warning(f"未获取到文件列表")
