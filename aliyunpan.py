@@ -89,17 +89,16 @@ class AliyunPan:
         # 获取用户信息
         user = self._ali.get_user()
 
+        # 判断是否首次运行，首次运行不发通知
+        first_flag = True
+
         # 读取已有本地文件
         if Path(self.__folder_json).exists():
             with open(self.__folder_json, 'r') as file:
                 content = file.read()
                 if content:
                     self.__folder_files = json.loads(content)
-
-        # 判断是否首次运行，首次运行不发通知
-        first_flag = False
-        if not self.__folder_files:
-            first_flag = True
+                    first_flag = False
 
         # 获取网盘根目录文件列表
         ll = self._ali.get_file_list()
@@ -109,7 +108,7 @@ class AliyunPan:
                 self.__get_folder_files('backup', file, first_flag)
 
         # 本次扫描有新文件，则发送通知
-        if self.__new_files:
+        if not first_flag and self.__new_files:
             # 组织msg
             new_file_msg = ""
             for index, file in enumerate(self.__new_files):
