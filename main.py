@@ -12,9 +12,6 @@ from uvicorn import Config
 
 import aliyunpan
 
-# 定时器
-_scheduler = None
-
 if __name__ == '__main__':
     alipan = aliyunpan.AliyunPan()
     filepath = os.path.join("/mnt",

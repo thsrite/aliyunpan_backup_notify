@@ -9,6 +9,13 @@ from aligo import Aligo
 
 import wechat
 
+logging.basicConfig(filename="alipan_notify", format='%(asctime)s - %(name)s - %(levelname)s -%(module)s:  %(message)s',
+                    datefmt='%Y-%m-%d %H:%M:%S ',
+                    level=logging.INFO)
+logger = logging.getLogger()
+KZT = logging.StreamHandler()
+KZT.setLevel(logging.DEBUG)
+logger.addHandler(KZT)
 
 class AliyunPan:
     # 本次文件存储路径
@@ -126,11 +133,11 @@ class AliyunPan:
                                 f"time {file.get('time')} \n" \
                                 f" \n"
             # 发送微信通知
-            logging.info(f'准备发送新文件上传通知 {new_file_msg}')
+            logger.info(f'准备发送新文件上传通知 {new_file_msg}')
             wc = wechat.WeChat()
             wc.send_message('文件备份通知', new_file_msg)
         else:
-            logging.info(f'未发现新上传文件')
+            logger.info(f'未发现新上传文件')
 
         # 最终写入文件
         if self.__folder_files:
