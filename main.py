@@ -22,14 +22,12 @@ if __name__ == '__main__':
         # 定时服务
         _scheduler = BackgroundScheduler(timezone="Asia/Shanghai")
         try:
-            if configs["notify"]["monitor"]:
-                _scheduler.add_job(func=alipan.sync_aliyunpan,
-                                   trigger=CronTrigger.from_crontab(str(configs["notify"]["monitor"])),
-                                   name="备份监控")
-            if configs["notify"]["sync"]:
-                _scheduler.add_job(func=alipan.resync,
-                                   trigger=CronTrigger.from_crontab(str(configs["notify"]["sync"])),
-                                   name="重新同步")
+            _scheduler.add_job(func=alipan.sync_aliyunpan,
+                               trigger=CronTrigger.from_crontab(str(configs["notify"]["monitor"])),
+                               name="备份监控")
+            _scheduler.add_job(func=alipan.resync,
+                               trigger=CronTrigger.from_crontab(str(configs["notify"]["sync"])),
+                               name="重新同步")
         except Exception as err:
             logging.error(f"定时任务配置错误：{err}")
 
