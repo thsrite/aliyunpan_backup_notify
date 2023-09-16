@@ -1,6 +1,8 @@
 import multiprocessing
 import os
 import logging
+from pathlib import Path
+
 from fastapi import FastAPI
 import uvicorn as uvicorn
 import yaml
@@ -27,6 +29,14 @@ if __name__ == '__main__':
             _scheduler.add_job(func=alipan.sync_aliyunpan,
                                trigger=CronTrigger.from_crontab(str(configs["notify"]["cron"])),
                                name="备份监控")
+
+            # 本次文件存储路径
+            __folder_json = '/mnt/floder_files.json'
+            if Path(__folder_json).exists():
+                os.remove(__folder_json)
+            _scheduler.add_job(func=alipan.sync_aliyunpan,
+                               trigger=CronTrigger.from_crontab(str(configs["notify"]["sync"])),
+                               name="重新同步")
         except Exception as err:
             logging.error(f"定时任务配置错误：{err}")
 

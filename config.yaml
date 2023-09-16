@@ -1,6 +1,7 @@
 notify:
   status: true
   cron: '0 9 * * *'
+  sync: '0 21 * * *'
   notify_path: 'backup'
 
 wechat:
