@@ -42,14 +42,6 @@ class AliyunPan:
         if file and file.type == 'file':
             sub_files = self.__folder_files.get(parent) or []
 
-            new_file = {
-                'name': file.name,
-                'size': file.size,
-                'time': time.strftime('%Y-%m-%d %H:%M:%S',
-                                      time.strptime(file.updated_at, '%Y-%m-%dT%H:%M:%S.%fZ'))
-            }
-            sub_files.append(new_file)
-
             # 判断是否新文件
             new_flag = True
 
@@ -58,6 +50,14 @@ class AliyunPan:
                     if str(f.get('name')) == str(file.name):
                         new_flag = False
                         break
+
+            new_file = {
+                'name': file.name,
+                'size': file.size,
+                'time': time.strftime('%Y-%m-%d %H:%M:%S',
+                                      time.strptime(file.updated_at, '%Y-%m-%dT%H:%M:%S.%fZ'))
+            }
+            sub_files.append(new_file)
 
             if new_flag and not first_flag:
                 new_file['parent'] = parent
@@ -72,14 +72,6 @@ class AliyunPan:
                 if file2.type == 'folder':
                     self.__get_folder_files(file2.name, file2, first_flag)
                 else:
-                    new_file = {
-                        'name': file2.name,
-                        'size': file2.size,
-                        'time': time.strftime('%Y-%m-%d %H:%M:%S',
-                                              time.strptime(file2.updated_at, '%Y-%m-%dT%H:%M:%S.%fZ'))
-                    }
-                    sub_files.append(new_file)
-
                     # 判断是否新文件
                     new_flag = True
 
@@ -88,6 +80,14 @@ class AliyunPan:
                             if str(f.get('name')) == str(file2.name):
                                 new_flag = False
                                 break
+
+                    new_file = {
+                        'name': file2.name,
+                        'size': file2.size,
+                        'time': time.strftime('%Y-%m-%d %H:%M:%S',
+                                              time.strptime(file2.updated_at, '%Y-%m-%dT%H:%M:%S.%fZ'))
+                    }
+                    sub_files.append(new_file)
 
                     if new_flag and not first_flag:
                         new_file['parent'] = file.name
