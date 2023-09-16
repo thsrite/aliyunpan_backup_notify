@@ -145,9 +145,8 @@ class AliyunPan:
             # 组织msg
             new_file_msg = ""
             for index, file in enumerate(self.__new_files):
-                new_file_msg += f"path {file.get('parent')} \n" \
-                                f"file {file.get('name')} \n" \
-                                f"time {file.get('time')} \n" \
+                new_file_msg += f"备份文件 {file.get('name')} \n" \
+                                f"备份时间 {file.get('time')} \n" \
                                 f" \n"
             # 发送微信通知
             logger.info(f'准备发送新文件上传通知 {new_file_msg}')
