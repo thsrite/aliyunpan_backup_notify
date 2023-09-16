@@ -121,6 +121,8 @@ class AliyunPan:
             logging.info(f'准备发送新文件上传通知 {new_file_msg}')
             wc = wechat.WeChat()
             wc.send_message('文件备份通知', new_file_msg)
+        else:
+            logging.info(f'未发现新上传文件')
 
         # 最终写入文件
         if self.__folder_files:
