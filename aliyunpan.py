@@ -1,8 +1,10 @@
 import json
 import logging
+import os
 import time
 from pathlib import Path
 
+import yaml
 from aligo import Aligo
 
 import wechat
@@ -84,8 +86,15 @@ class AliyunPan:
                 self.__folder_files[file.name] = sub_files
 
     def sync_aliyunpan(self):
+        filepath = os.path.join("/mnt",
+                                'config.yaml')  # 文件路径,这里需要将a.yaml文件与本程序文件放在同级目录下
+        with open(filepath, 'r') as f:  # 用with读取文件更好
+            configs = yaml.load(f, Loader=yaml.FullLoader)  # 按字典格式读取并返回
+
+        refresh_token = str(configs["notify"]["refresh_token"]) or None
+
         # 第一次使用，会弹出二维码，供扫描登录
-        self._ali = Aligo()
+        self._ali = Aligo(level=logging.INFO, refresh_token=refresh_token)
         # 获取用户信息
         user = self._ali.get_user()
 
