@@ -10,7 +10,7 @@ import wechat
 
 class AliyunPan:
     # 本次文件存储路径
-    __folder_json = '/mnt'
+    __folder_json = '/mnt/floder_files.json'
     # 文件夹->文件映射关系
     __folder_files = {}
     # 本次扫描新闻界
