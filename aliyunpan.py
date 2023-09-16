@@ -20,7 +20,7 @@ logger.addHandler(KZT)
 
 class AliyunPan:
     # 本次文件存储路径
-    __folder_json = '/mnt/floder_files.json'
+    __folder_json = '/mnt/folder_files.json'
     # 文件夹->文件映射关系
     __folder_files = {}
     # 本次扫描新闻界
@@ -117,7 +117,7 @@ class AliyunPan:
         refresh_token = str(configs["notify"]["refresh_token"]) or None
 
         # 第一次使用，会弹出二维码，供扫描登录
-        self._ali = Aligo(level=logging.ERROR, refresh_token=refresh_token)
+        self._ali = Aligo(level=logging.INFO, refresh_token=refresh_token)
         # 获取用户信息
         user = self._ali.get_user()
         logger.info(user)
