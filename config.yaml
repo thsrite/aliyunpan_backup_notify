@@ -1,0 +1,11 @@
+notify:
+  status: true
+  cron: '0 9 * * *'
+  notify_path: 'backup'
+
+wechat:
+  corp_id: ""
+  secret: ""
+  agent_id: ""
+  to_user: ""
+
