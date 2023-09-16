@@ -93,6 +93,13 @@ class AliyunPan:
             if sub_files:
                 self.__folder_files[file.name] = sub_files
 
+    def resync(self):
+        # 本次文件存储路径
+        __folder_json = '/mnt/floder_files.json'
+        if Path(__folder_json).exists():
+            os.remove(__folder_json)
+        self.sync_aliyunpan()
+
     def sync_aliyunpan(self):
         '''
         同步阿里云文件
