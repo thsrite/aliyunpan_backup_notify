@@ -4,6 +4,14 @@ import requests
 import yaml
 import os
 
+logging.basicConfig(filename="alipan_wechat", format='%(asctime)s - %(name)s - %(levelname)s -%(module)s:  %(message)s',
+                    datefmt='%Y-%m-%d %H:%M:%S ',
+                    level=logging.INFO)
+logger = logging.getLogger()
+KZT = logging.StreamHandler()
+KZT.setLevel(logging.DEBUG)
+logger.addHandler(KZT)
+
 
 class WeChat():
     def __init__(self):
@@ -28,9 +36,10 @@ class WeChat():
         }
         req = requests.get(url=url, params=data)
         res = req.json()
-        if res['errmsg'] == 'ok':
+        if res['errcode'] == 0:
             return res["access_token"]
         else:
+            logger.error(f"获取 access_token 失败，错误信息：{res}")
             return res
 
     def send_message(self, title, text):
@@ -54,8 +63,9 @@ class WeChat():
         }
         req = requests.post(url=url, json=req_json)
         res = req.json()
-        if res['errmsg'] == 'ok':
-            logging.info("send wechat msg successed")
+        if res['errcode'] == 0:
+            logger.info("send wechat msg successed")
             return "send message sucessed"
         else:
+            logger.error(f"发送 {title} 失败，错误信息：{res}")
             return res
