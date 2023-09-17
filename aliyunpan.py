@@ -19,6 +19,14 @@ logger.addHandler(KZT)
 
 
 class AliyunPan:
+    def __init__(self):
+        filepath = os.path.join("/mnt", 'config.yaml')
+        with open(filepath, 'r') as f:  # 用with读取文件更好
+            configs = yaml.load(f, Loader=yaml.FullLoader)  # 按字典格式读取并返回
+
+        self.REFRESH_TOKEN = configs["notify"]["refresh_token"] or None
+        self.NOTIFY_PATH = str(configs["notify"]["notify_path"])
+
     # 本次文件存储路径
     __folder_json = '/mnt/folder_files.json'
     # 文件夹->文件映射关系
@@ -117,10 +125,8 @@ class AliyunPan:
         with open(filepath, 'r') as f:  # 用with读取文件更好
             configs = yaml.load(f, Loader=yaml.FullLoader)  # 按字典格式读取并返回
 
-        refresh_token = str(configs["notify"]["refresh_token"]) or None
-
         # 第一次使用，会弹出二维码，供扫描登录
-        self._ali = Aligo(level=logging.INFO, refresh_token=refresh_token)
+        self._ali = Aligo(level=logging.INFO, refresh_token=self.REFRESH_TOKEN)
         # 获取用户信息
         user = self._ali.get_user()
         logger.info(user)
@@ -140,8 +146,8 @@ class AliyunPan:
         ll = self._ali.get_file_list()
         # 遍历文件列表
         for file in ll:
-            if file.name == 'backup':
-                self.__get_folder_files('backup', file, first_flag)
+            if file.name == self.NOTIFY_PATH:
+                self.__get_folder_files(self.NOTIFY_PATH, file, first_flag)
 
         # 本次扫描有新文件，则发送通知
         if not first_flag and self.__new_files:

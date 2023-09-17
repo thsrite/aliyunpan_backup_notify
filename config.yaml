@@ -10,4 +10,6 @@ wechat:
   secret: ""
   agent_id: ""
   to_user: ""
+  proxy_url: ""
+  image_url: ""
 

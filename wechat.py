@@ -15,10 +15,13 @@ class WeChat():
         self.SECRET = str(configs["wechat"]["secret"])  # 管理组凭证密钥
         self.AGENT_ID = int(configs["wechat"]["agent_id"])  # 应用ID
         self.TO_USER = str(configs["wechat"]["to_user"])  # 应用ID
+        self.PROXY_URL = configs["wechat"]["proxy_url"] or "https://qyapi.weixin.qq.com"  # 微信代理
+        self.IMAGE_URL = configs["wechat"][
+                             "image_url"] or "https://raw.githubusercontent.com/thsrite/aliyundrive-checkin/main/aliyunpan.jpg"  # 代理图片
         self.token = self.get_token()
 
     def get_token(self):
-        url = "https://qyapi.weixin.qq.com/cgi-bin/gettoken"
+        url = f"{self.PROXY_URL}/cgi-bin/gettoken"
         data = {
             "corpid": self.CORP_ID,
             "corpsecret": self.SECRET
@@ -31,8 +34,7 @@ class WeChat():
             return res
 
     def send_message(self, title, text):
-        url = "https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=%s" % self.token
-        image_url = "https://raw.githubusercontent.com/thsrite/aliyundrive-checkin/main/aliyunpan.jpg"
+        url = f"{self.PROXY_URL}/cgi-bin/message/send?access_token=%s" % self.token
         if text:
             text = text.replace("\n\n", "\n")
         req_json = {
@@ -44,7 +46,7 @@ class WeChat():
                     {
                         "title": title,
                         "description": text,
-                        "picurl": image_url,
+                        "picurl": self.IMAGE_URL,
                         "url": ''
                     }
                 ]
