@@ -1,6 +1,7 @@
 import multiprocessing
 import os
 import logging
+from threading import Event
 
 from fastapi import FastAPI
 import uvicorn as uvicorn
@@ -21,6 +22,12 @@ if __name__ == '__main__':
     if bool(configs["notify"]["status"]) == True:
         # 定时服务
         _scheduler = BackgroundScheduler(timezone="Asia/Shanghai")
+        if _scheduler:
+            _scheduler.remove_all_jobs()
+            if _scheduler.running:
+                Event().set()
+                _scheduler.shutdown()
+                Event().clear()
         try:
             if configs["notify"]["monitor"]:
                 _scheduler.add_job(func=alipan.sync_aliyunpan,
