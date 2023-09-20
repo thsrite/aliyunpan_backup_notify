@@ -114,10 +114,6 @@ class AliyunPan:
         同步阿里云文件
         '''
         logger.info("同步阿里云文件")
-        filepath = os.path.join("/mnt",
-                                'config.yaml')  # 文件路径,这里需要将a.yaml文件与本程序文件放在同级目录下
-        with open(filepath, 'r') as f:  # 用with读取文件更好
-            configs = yaml.load(f, Loader=yaml.FullLoader)  # 按字典格式读取并返回
 
         # 第一次使用，会弹出二维码，供扫描登录
         self._ali = Aligo(level=logging.INFO, refresh_token=self.REFRESH_TOKEN)
