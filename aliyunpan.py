@@ -1,3 +1,4 @@
+import datetime
 import json
 import logging
 import os
@@ -52,12 +53,12 @@ class AliyunPan:
                     if str(f.get('name')) == str(file.name):
                         new_flag = False
                         break
-
+            update_date = datetime.datetime.strptime(file.updated_at,
+                                                     '%Y-%m-%dT%H:%M:%S.%fZ') + datetime.timedelta(hours=8)
             new_file = {
                 'name': file.name,
                 'size': file.size,
-                'time': time.strftime('%Y-%m-%d %H:%M:%S',
-                                      time.strptime(file.updated_at, '%Y-%m-%dT%H:%M:%S.%fZ'))
+                'time': update_date.strftime('%Y-%m-%d %H:%M:%S')
             }
             if first_flag:
                 sub_files.append(new_file)
@@ -84,12 +85,12 @@ class AliyunPan:
                             if str(f.get('name')) == str(file2.name):
                                 new_flag = False
                                 break
-
+                    update_date = datetime.datetime.strptime(file2.updated_at,
+                                                             '%Y-%m-%dT%H:%M:%S.%fZ') + datetime.timedelta(hours=8)
                     new_file = {
                         'name': file2.name,
                         'size': file2.size,
-                        'time': time.strftime('%Y-%m-%d %H:%M:%S',
-                                              time.strptime(file2.updated_at, '%Y-%m-%dT%H:%M:%S.%fZ'))
+                        'time': update_date.strftime('%Y-%m-%d %H:%M:%S')
                     }
                     if first_flag:
                         sub_files.append(new_file)
