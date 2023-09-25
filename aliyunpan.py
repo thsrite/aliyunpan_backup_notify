@@ -115,6 +115,7 @@ class AliyunPan:
         同步阿里云文件
         '''
         logger.info("同步阿里云文件")
+        self.__new_files = []
 
         # 第一次使用，会弹出二维码，供扫描登录
         self._ali = Aligo(level=logging.INFO, refresh_token=self.REFRESH_TOKEN)
