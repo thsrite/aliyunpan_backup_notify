@@ -111,7 +111,7 @@ class AliyunPan:
         self.sync_aliyunpan()
 
     @staticmethod
-    def str_filesize(size: Union[str, float, int], pre: int = 2) -> str:
+    def str_filesize(size, pre: int = 2) -> str:
         """
         将字节计算为文件大小描述（带单位的格式化后返回）
         """
